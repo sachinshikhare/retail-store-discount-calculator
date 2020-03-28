@@ -1,9 +1,7 @@
 package discount.configreader;
 
-import discount.CustomerType;
 import discount.exceptions.CustomerTypeNotConfiguredException;
 import discount.exceptions.InvalidConfigException;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,14 +14,14 @@ public class DiscountConfigReader {
 
     private static final String DISCOUNT_CONFIG_FILE_PATH = "./src/main/resources/";
 
-    public static String getDiscountConfigByCustomerType(final CustomerType customerType) {
+    public static String getDiscountConfigByCustomerType(final String customerType) {
 
         try (InputStream configFile = new FileInputStream(DISCOUNT_CONFIG_FILE_PATH + DISCOUNT_CONFIG_FILENAME)) {
             Properties prop = new Properties();
             prop.load(configFile);
-            return Optional.of(prop.getProperty(customerType.name()))
+            return Optional.of(prop.getProperty(customerType))
                 .orElseThrow(() ->
-                    new CustomerTypeNotConfiguredException(String.format("Customer type %s not configured in %s", customerType.name(), DISCOUNT_CONFIG_FILENAME))
+                    new CustomerTypeNotConfiguredException(String.format("Customer type %s not configured in %s", customerType, DISCOUNT_CONFIG_FILENAME))
                 );
 
         } catch (IOException ex) {
